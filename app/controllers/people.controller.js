@@ -26,7 +26,7 @@ exports.fetchAll = (req, res) => {
                     message: "Server error"
                 });
             }
-            res.sendStatus(200).end(JSON.stringify(results));
+            res.sendStatus(200).send(JSON.stringify(results));
         });
 };
 
@@ -40,7 +40,7 @@ exports.fetchOne = (req, res) => {
                     message: "Server error"
                 });
             }
-            res.sendStatus(200).end(JSON.stringify(results[0]));
+            res.sendStatus(200).send(JSON.stringify(results[0]));
         });
 };
 
