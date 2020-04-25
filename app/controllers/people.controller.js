@@ -17,7 +17,7 @@ function getDbPool() {
     return cachedDb2;
 }
 
-// Retrieve and return all todos from the database.
+// Retrieve and return all people from the database.
 exports.fetchAll = (req, res) => {
     getDbPool().query('select * from people',
         function (error, results, fields) {
@@ -26,9 +26,10 @@ exports.fetchAll = (req, res) => {
         });
 };
 
-// Retrieve and return all todos from the database.
+// Retrieve and return single person from the database.
 exports.fetchOne = (req, res) => {
     getDbPool().query('select * from people where id=?',
+        [req.params.id],
         function (error, results, fields) {
             if (error) throw error;
             res.end(JSON.stringify(results));
