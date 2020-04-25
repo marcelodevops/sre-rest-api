@@ -12,10 +12,18 @@ app.use(bodyParser.json());
 //port definition, if environment variable is undefined use default to 8082
 const port = process.env.PORT || 8082;
 
-//handler to root directory get request
+//root directory get request route handler for testing
 app.get('/', async (req, res) => {
     res.json({ status: 'API is ready'});
 });
+
+//get request people by id route handler
+app.get('/people/:id', async (req, res) => {
+    const id = parseInt(req.params.id);
+    const person = await getPeopleById(id);
+    res.json({status:'success', data: {person: person}});
+}); 
+
 //get people instance by id handler
 async function getPeopleById(id) {
     return new Promise(function(resolve, reject){
