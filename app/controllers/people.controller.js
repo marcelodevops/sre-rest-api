@@ -26,9 +26,11 @@ exports.fetchAll = (req, res) => {
                     message: "Server error"
                 });
             }
-            res.sendStatus(200).send(JSON.stringify(results));
+            res.status(200).send(JSON.stringify(results));
         });
 };
+
+
 
 // Retrieve and return single person from the database.
 exports.fetchOne = (req, res) => {
@@ -40,7 +42,7 @@ exports.fetchOne = (req, res) => {
                     message: "Server error"
                 });
             }
-            res.sendStatus(200).send(JSON.stringify(results[0]));
+            res.status(200).send(JSON.stringify(results[0]));
         });
 };
 
