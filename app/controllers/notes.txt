@@ -1,0 +1,5 @@
+SQL_ROOT_PASSWORD=bJtcAhFslsI2uooc
+export INST_CON_NAME=nodejs-mysql-api-274500:us-central1:sre-rest-api
+export SQL_PASSWORD=b_J$tcAhFslsI2##
+export SQL_INSTANCE_NAME=sre-rest-api
+export SQL_NAME=apidb
