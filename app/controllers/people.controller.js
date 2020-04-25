@@ -32,6 +32,6 @@ exports.fetchOne = (req, res) => {
         [req.params.id],
         function (error, results, fields) {
             if (error) throw error;
-            res.end(JSON.stringify(results));
+            res.end(JSON.stringify(results[0]));
         });
 };
