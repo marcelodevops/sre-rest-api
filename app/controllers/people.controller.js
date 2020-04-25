@@ -18,8 +18,17 @@ function getDbPool() {
 }
 
 // Retrieve and return all todos from the database.
-exports.findAll = (req, res) => {
+exports.fetchAll = (req, res) => {
     getDbPool().query('select * from people',
+        function (error, results, fields) {
+            if (error) throw error;
+            res.end(JSON.stringify(results));
+        });
+};
+
+// Retrieve and return all todos from the database.
+exports.fetchOne = (req, res) => {
+    getDbPool().query('select * from people where id=?',
         function (error, results, fields) {
             if (error) throw error;
             res.end(JSON.stringify(results));

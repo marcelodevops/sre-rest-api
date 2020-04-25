@@ -16,22 +16,6 @@ app.get('/', async (req, res) => {
     res.json({ status: 'API is ready'});
 });
 
-//get request people by id route handler
-// app.get('/people/:id', async (req, res) => {
-//     const id = parseInt(req.params.id);
-//     const person = await getPeopleById(id);
-//     res.json({status:'success', data: {person: person}});
-// }); 
-
-//get people instance by id handler
-// async function getPeopleById(id) {
-//     return new Promise(function(resolve, reject){
-//         const sql = 'SELECT * FROM people WHERE id=?';
-//         getDbPool().query(sql, [id], (err, results) => {
-//             resolve(results[0]);
-//         });
-//     });
-// }
 
 //import required routes
 require('./app/routes/people.routes.js')(app);

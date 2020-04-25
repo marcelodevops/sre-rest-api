@@ -4,10 +4,10 @@ module.exports = (app) => {
     // app.post('/people', people.create);
 
     // Retrieve all people
-    app.get('/people', people.findAll);
+    app.get('/people/all', people.fetchAll);
 
-    // // Retrieve a single person by id
-    // app.get('/people/:id', people.findOne);
+    // Retrieve a single person by id
+    app.get('/people/:id', people.fetchOne);
 
     // // Update a person with id
     // app.put('/people/:id', people.update);
