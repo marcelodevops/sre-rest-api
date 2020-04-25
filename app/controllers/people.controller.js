@@ -21,8 +21,12 @@ function getDbPool() {
 exports.fetchAll = (req, res) => {
     getDbPool().query('select * from people',
         function (error, results, fields) {
-            if (error) throw error;
-            res.end(JSON.stringify(results));
+            if (error) {
+                return res.status(500).send({
+                    message: "Server error"
+                });
+            }
+            res.sendStatus(200).end(JSON.stringify(results));
         });
 };
 
@@ -31,7 +35,37 @@ exports.fetchOne = (req, res) => {
     getDbPool().query('select * from people where id=?',
         [req.params.id],
         function (error, results, fields) {
-            if (error) throw error;
-            res.end(JSON.stringify(results[0]));
+            if (error) {
+                return res.status(500).send({
+                    message: "Server error"
+                });
+            }
+            res.sendStatus(200).end(JSON.stringify(results[0]));
+        });
+};
+
+// Add a new person
+exports.create = (req, res) => {
+    // Validate request
+    if (!req.body.rut) {
+        return res.status(400).send({
+            message: "Invalid data, RUT can not be empty"
+        });
+    }
+
+    var params = req.body;
+    console.log(params);
+
+    getDbPool().query("INSERT INTO people SET ? ", params,
+        function (error, results, fields) {
+            if (error) {
+                return res.status(500).send({
+                    message: "Server error"
+                });
+            }
+            return res.status(200).send({
+                data: results,
+                message: 'Success. New person has been added.'
+            });
         });
 };
