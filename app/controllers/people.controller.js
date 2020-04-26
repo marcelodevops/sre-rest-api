@@ -96,7 +96,7 @@ exports.update = (req, res) => {
 
     console.log(req.params.id);
     console.log(req.body.rut);
-    connection.query('UPDATE `people` SET ? where `id`=?',
+    getDbPool.query('UPDATE `people` SET ? where `id`=?',
         [req.body, req.params.id],
         function (error, results, fields) {
             if (error) {
