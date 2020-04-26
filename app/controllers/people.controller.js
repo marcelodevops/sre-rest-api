@@ -112,7 +112,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
     console.log(req.params.id);
     connection.query('DELETE FROM `people` WHERE `id`=?', 
-        [req.req.id], function (error, results, fields) {
+        [req.params.id], function (error, results, fields) {
             if (error) {
                 return res.status(500).send({
                     message: "Server error"
