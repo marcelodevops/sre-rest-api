@@ -68,7 +68,7 @@ exports.fetchOne = (req, res) => {
 // Add a new person
 exports.create = (req, res) => {
     // Validate request
-    if (!req.body.rut) {
+    if (!req.body) {
         return res.status(400).send({
             message: "Invalid data, RUT can not be empty"
         });
