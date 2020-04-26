@@ -121,8 +121,14 @@ exports.delete = (req, res) => {
         [req.params.id], function (error, results, fields) {
             if (error) {
                 return res.status(500).send({
-                    message: "Server error"
+                    message: "Server error ocurre while deleting a person"
                 });
+            }
+            if (results.affectedRows == 0) {
+                return res.status(404).send({
+                    message: "Resource not found"
+                });
+                
             }
             res.status(200).send({message : 'Record has been deleted!'});
     });
