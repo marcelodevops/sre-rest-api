@@ -12,7 +12,7 @@ const port = process.env.PORT || 8082;
 
 //root directory get request route handler for testing
 app.get('/', async (req, res) => {
-    res.json({ status: 'API is ready and listening on port', port});
+    res.json({ status: 'API is ready'});
 });
 
 //import required routes

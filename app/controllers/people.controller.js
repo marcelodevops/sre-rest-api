@@ -30,6 +30,19 @@ exports.fetchAll = (req, res) => {
         });
 };
 
+// Retrieve and return all people from the database.
+exports.paginated = (req, res) => {
+    getDbPool().query('select * from people',
+        function (error, results, fields) {
+            if (error) {
+                return res.status(500).send({
+                    message: "Server error"
+                });
+            }
+            res.status(200).send(JSON.stringify(results));
+        });
+};
+
 
 
 // Retrieve and return single person from the database.
@@ -70,4 +83,41 @@ exports.create = (req, res) => {
                 message: 'Success. New person has been added.'
             });
         });
+};
+
+
+exports.update = (req, res) => {
+    // Validate Request
+    if (!req.body.rut) {
+        return res.status(400).send({
+            message: "Invalid data, RUT can not be empty"
+        });
+    }
+
+    console.log(req.params.id);
+    console.log(req.body.rut);
+    connection.query('UPDATE `people` SET ? where `id`=?',
+        [req.body, req.params.id],
+        function (error, results, fields) {
+            if (error) {
+                return res.status(500).send({
+                    message: "Server error"
+                });  
+            }
+            res.status(201).send(JSON.stringify(results));
+        });
+};
+
+// Delete a person by id in the request
+exports.delete = (req, res) => {
+    console.log(req.body);
+    connection.query('DELETE FROM `people` WHERE `id`=?', 
+        [req.req.id], function (error, results, fields) {
+            if (error) {
+                return res.status(500).send({
+                    message: "Server error"
+                });
+            }
+            res.status(200).send({message : 'Record has been deleted!'});
+    });
 };
