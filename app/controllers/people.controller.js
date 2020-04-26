@@ -94,9 +94,9 @@ exports.create = (req, res) => {
 
 exports.update = (req, res) => {
     // Validate Request
-    if (!req.body.rut) {
+    if (!req.body) {
         return res.status(400).send({
-            message: "Invalid data, RUT can not be empty"
+            message: "Invalid data, content can not be empty"
         });
     }
 
@@ -109,6 +109,11 @@ exports.update = (req, res) => {
                 return res.status(500).send({
                     message: "Server error"
                 });  
+            }
+            if (results.affectedRows == 0) {
+                return res.status(404).send({
+                    message: "Resource not found"
+                });   
             }
             res.status(201).send(JSON.stringify(results));
         });
