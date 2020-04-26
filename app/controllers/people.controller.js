@@ -55,6 +55,11 @@ exports.fetchOne = (req, res) => {
                     message: "Server error"
                 });
             }
+            if (!results) {
+                return res.status(404).send({
+                    message: "Resource not found"
+                });
+            }
             res.status(200).send(JSON.stringify(results[0]));
         });
 };
