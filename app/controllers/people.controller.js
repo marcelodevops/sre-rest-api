@@ -111,7 +111,7 @@ exports.update = (req, res) => {
 // Delete a person by id in the request
 exports.delete = (req, res) => {
     console.log(req.params.id);
-    connection.query('DELETE FROM `people` WHERE `id`=?', 
+    getDbPool().query('DELETE FROM `people` WHERE `id`=?', 
         [req.params.id], function (error, results, fields) {
             if (error) {
                 return res.status(500).send({
