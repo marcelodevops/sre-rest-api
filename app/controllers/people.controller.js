@@ -110,7 +110,7 @@ exports.update = (req, res) => {
 
 // Delete a person by id in the request
 exports.delete = (req, res) => {
-    console.log(req.body);
+    console.log(req.params.id);
     connection.query('DELETE FROM `people` WHERE `id`=?', 
         [req.req.id], function (error, results, fields) {
             if (error) {

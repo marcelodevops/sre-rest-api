@@ -16,5 +16,5 @@ module.exports = (app) => {
     app.put('/people/:id', people.update);
 
     // // Delete a person by id
-    // app.delete('/people/:id', people.delete);    
+    app.delete('/people/:id', people.delete);    
 }
