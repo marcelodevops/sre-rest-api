@@ -32,6 +32,11 @@ exports.fetchAll = (req, res) => {
 
 // Retrieve and return all people from the database.
 exports.paginated = (req, res) => {
+    if(!req.query.npp || !req.query.page){
+        return res.status(400).send({
+            message: "Bad request, Invalid input, Missing required parameters "
+        });
+    }
     var numRows;
     var queryPagination;
     var numPerPage = parseInt(req.query.npp, 10) || 1;
