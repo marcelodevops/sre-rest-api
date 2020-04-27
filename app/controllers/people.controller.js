@@ -35,7 +35,7 @@ exports.paginated = (req, res) => {
     var numRows;
     var queryPagination;
     var numPerPage = parseInt(req.query.npp, 10) || 1;
-    var page = parseInt(req.query.page, 10) || 0;
+    var page = parseInt(req.query.page, 10)-1 || 0;
     var numPages;
     var skip = page * numPerPage;
     // Here we compute the LIMIT parameter for MySQL query
