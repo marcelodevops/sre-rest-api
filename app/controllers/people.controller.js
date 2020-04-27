@@ -29,7 +29,7 @@ exports.fetchAll = (req, res) => {
             res.status(200).type('application/json').send(JSON.stringify(results));
         });
 };
-
+//let numPages;
 // Retrieve and return all people from the database.
 exports.paginated = (req, res) => {
     if(!req.query.npp || !req.query.page){
