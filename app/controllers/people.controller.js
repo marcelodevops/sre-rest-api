@@ -76,7 +76,6 @@ exports.paginated = (req, res) => {
             } else responsePayload.pagination = {
                 err: 'queried page ' + page + ' is >= to maximum page number ' + numPages
             }
-
             if (error) {
                 return res.status(500).send({
                     message: "Server error"
