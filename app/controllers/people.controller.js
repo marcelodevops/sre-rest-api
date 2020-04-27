@@ -32,16 +32,54 @@ exports.fetchAll = (req, res) => {
 
 // Retrieve and return all people from the database.
 exports.paginated = (req, res) => {
-    getDbPool().query('select * from people',
+    var numRows;
+    var queryPagination;
+    var numPerPage = parseInt(req.query.npp, 10) || 1;
+    var page = parseInt(req.query.page, 10) || 0;
+    var numPages;
+    var skip = page * numPerPage;
+    // Here we compute the LIMIT parameter for MySQL query
+    var limit = skip + ',' + numPerPage;
+    getDbPool().query('SELECT * FROM people',
         function (error, results, fields) {
             if (error) {
                 return res.status(500).send({
                     message: "Server error"
                 });
             }
+            numRows = results[0].numRows;
+            numPages = Math.ceil(numRows / numPerPage);
+            
+        });
+        getDbPool().query('SELECT * FROM people ORDER BY id DESC LIMIT ' + limit,
+        function (error, results, fields) {
+            if (error) {
+                return res.status(500).send({
+                    message: "Server error"
+                });
+            }
+            var resPayload = {
+                results: results
+            }
+            if (page < numPages) {
+                resPayload.pagination = {
+                  current: page,
+                  perPage: numPerPage,
+                  previous: page > 0 ? page - 1 : undefined,
+                  next: page < numPages - 1 ? page + 1 : undefined
+                }
+              }
+              else resPayload.pagination = {
+                err: 'queried page ' + page + ' is >= to maximum page number ' + numPages
+              }
+              if (error) {
+                return res.status(500).send({
+                    message: "Server error"
+                });
+            }
             res.status(200).type('application/json').
             set('Accept', 'application/json').
-            send(JSON.stringify(results));
+            send(JSON.stringify(resPayload));
         });
 };
 
@@ -83,7 +121,7 @@ exports.create = (req, res) => {
             message: "Invalid json format"
         });
     }
-    var params = req.body;
+    const params = req.body;
     console.log(params);
 
     getDbPool().query("INSERT INTO people SET ? ", params,
@@ -93,7 +131,7 @@ exports.create = (req, res) => {
                     message: "Server error"
                 });
             }
-            return res.status(200).send({
+            return res.status(200).type('application/json').send({
                 data: results,
                 message: 'Success. New person has been added.'
             });
@@ -128,7 +166,8 @@ exports.update = (req, res) => {
                     message: "Resource not found"
                 });   
             }
-            res.status(201).send(JSON.stringify(results));
+            res.status(201).type('application/json').
+            send(JSON.stringify(results));
         });
 };
 
