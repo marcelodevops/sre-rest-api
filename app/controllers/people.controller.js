@@ -26,7 +26,7 @@ exports.fetchAll = (req, res) => {
                     message: "Server error"
                 });
             }
-            res.status(200).send(JSON.stringify(results));
+            res.status(200).type('application/json').send(JSON.stringify(results));
         });
 };
 
@@ -39,7 +39,7 @@ exports.paginated = (req, res) => {
                     message: "Server error"
                 });
             }
-            res.status(200).send(JSON.stringify(results));
+            res.status(200).type('application/json').send(JSON.stringify(results));
         });
 };
 
@@ -61,7 +61,7 @@ exports.fetchOne = (req, res) => {
                     message: "Resource not found"
                 });
             }
-            res.status(200).send(JSON.stringify(results[0]));
+            res.status(200).type('application/json').send(JSON.stringify(results[0]));
         });
 };
 
