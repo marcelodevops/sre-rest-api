@@ -39,7 +39,9 @@ exports.paginated = (req, res) => {
                     message: "Server error"
                 });
             }
-            res.status(200).type('application/json').send(JSON.stringify(results));
+            res.status(200).type('application/json').
+            set('Accept', 'application/json').
+            send(JSON.stringify(results));
         });
 };
 
@@ -61,7 +63,10 @@ exports.fetchOne = (req, res) => {
                     message: "Resource not found"
                 });
             }
-            res.status(200).type('application/json').send(JSON.stringify(results[0]));
+            res.status(200).
+            type('application/json').
+            set('Accept', 'application/json').
+            send(JSON.stringify(results[0]));
         });
 };
 
@@ -73,7 +78,11 @@ exports.create = (req, res) => {
             message: "Invalid data, RUT can not be empty"
         });
     }
-
+    if (!req.accepts('application/json')) {
+        return res.status(406).send({
+            message: "Invalid json format"
+        });
+    }
     var params = req.body;
     console.log(params);
 
@@ -99,7 +108,11 @@ exports.update = (req, res) => {
             message: "Invalid data, content can not be empty"
         });
     }
-
+    if (!req.accepts('application/json')) {
+        return res.status(406).send({
+            message: "Invalid json format"
+        });
+    }
     console.log(req.params.id);
     console.log(req.body.rut);
     getDbPool().query('UPDATE `people` SET ? where `id`=?',
