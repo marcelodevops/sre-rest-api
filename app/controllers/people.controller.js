@@ -2,7 +2,7 @@ const mysql = require('mysql')
 
 let cachedDb2;
 function getDbPool() {
-    if(!cachedDb2) {
+    if (!cachedDb2) {
         cachedDb2 = mysql.createPool({
             connectionLimit: 1,
             user: process.env.SQL_USER,
@@ -12,7 +12,7 @@ function getDbPool() {
             //host: '35.188.208.20',
             //port: 3306
         });
-        
+
     }
     return cachedDb2;
 }
@@ -32,7 +32,7 @@ exports.fetchAll = (req, res) => {
 //let numPages;
 // Retrieve and return all people from the database.
 exports.paginated = (req, res) => {
-    if(!req.query.npp || !req.query.page){
+    if (!req.query.npp || !req.query.page) {
         return res.status(400).send({
             message: "Bad request, Invalid input, Missing required parameters "
         });
@@ -40,7 +40,7 @@ exports.paginated = (req, res) => {
     var numRows;
     var queryPagination;
     var numPerPage = parseInt(req.query.npp, 10) || 1;
-    var page = parseInt(req.query.page, 10)-1 || 0;
+    var page = parseInt(req.query.page, 10) - 1 || 0;
     var numPages;
     var skip = page * numPerPage;
     // Here we compute the LIMIT parameter for MySQL query
@@ -54,9 +54,9 @@ exports.paginated = (req, res) => {
             }
             numRows = results[0].numRows;
             numPages = Math.ceil(numRows / numPerPage);
-            
+
         });
-        getDbPool().query('SELECT * FROM people ORDER BY id ASC LIMIT ' + limit,
+    getDbPool().query('SELECT * FROM people ORDER BY id ASC LIMIT ' + limit,
         function (error, results, fields) {
             if (error) {
                 return res.status(500).send({
@@ -68,21 +68,23 @@ exports.paginated = (req, res) => {
             }
             if (page < numPages) {
                 resPayload.pagination = {
-                  current: page,
-                  perPage: numPerPage,
-                  previous: page > 0 ? page - 1 : undefined,
-                  next: page < numPages - 1 ? page + 1 : undefined
+                    current: page,
+                    perPage: numPerPage,
+                    previous: page > 0 ? page - 1 : undefined,
+                    next: page < numPages - 1 ? page + 1 : undefined
                 }
-              }
-              
-              if (error) {
+            } else responsePayload.pagination = {
+                err: 'queried page ' + page + ' is >= to maximum page number ' + numPages
+            }
+
+            if (error) {
                 return res.status(500).send({
                     message: "Server error"
                 });
             }
             res.status(200).type('application/json').
-            set('Accept', 'application/json').
-            send(JSON.stringify(resPayload));
+                set('Accept', 'application/json').
+                send(JSON.stringify(resPayload));
         });
 };
 
@@ -99,15 +101,15 @@ exports.fetchOne = (req, res) => {
                 });
             }
             console.log(results);
-            if (results.length<1) {
+            if (results.length < 1) {
                 return res.status(404).send({
                     message: "Resource not found"
                 });
             }
             res.status(200).
-            type('application/json').
-            set('Accept', 'application/json').
-            send(JSON.stringify(results[0]));
+                type('application/json').
+                set('Accept', 'application/json').
+                send(JSON.stringify(results[0]));
         });
 };
 
@@ -162,22 +164,22 @@ exports.update = (req, res) => {
             if (error) {
                 return res.status(500).send({
                     message: "Server error"
-                });  
+                });
             }
             if (results.affectedRows == 0) {
                 return res.status(404).send({
                     message: "Resource not found"
-                });   
+                });
             }
             res.status(201).type('application/json').
-            send(JSON.stringify(results));
+                send(JSON.stringify(results));
         });
 };
 
 // Delete a person by id in the request
 exports.delete = (req, res) => {
     console.log(req.params.id);
-    getDbPool().query('DELETE FROM `people` WHERE `id`=?', 
+    getDbPool().query('DELETE FROM `people` WHERE `id`=?',
         [req.params.id], function (error, results, fields) {
             if (error) {
                 return res.status(500).send({
@@ -188,8 +190,8 @@ exports.delete = (req, res) => {
                 return res.status(404).send({
                     message: "Resource not found"
                 });
-                
+
             }
-            res.status(200).send({message : 'Record has been deleted!'});
-    });
+            res.status(200).send({ message: 'Record has been deleted!' });
+        });
 };
