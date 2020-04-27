@@ -51,7 +51,7 @@ exports.paginated = (req, res) => {
             numPages = Math.ceil(numRows / numPerPage);
             
         });
-        getDbPool().query('SELECT * FROM people ORDER BY id DESC LIMIT ' + limit,
+        getDbPool().query('SELECT * FROM people ORDER BY id ASC LIMIT ' + limit,
         function (error, results, fields) {
             if (error) {
                 return res.status(500).send({
